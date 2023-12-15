@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Client_Network_App
 {
-    public partial class Form1 : Form
+    public partial class _winFormClient : Form
     {
-        public Form1()
+        public _winFormClient()
         {
             InitializeComponent();
         }
