@@ -16,7 +16,7 @@ namespace Client_Network_App
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new _winFormClient());
+            Application.Run(new winFormClient());
         }
     }
 }

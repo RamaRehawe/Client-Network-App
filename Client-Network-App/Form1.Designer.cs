@@ -1,6 +1,6 @@
 ﻿namespace Client_Network_App
 {
-    partial class _winFormClient
+    partial class winFormClient
     {
         /// <summary>
         /// Required designer variable.
@@ -30,16 +30,16 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this._statusTextBox = new System.Windows.Forms.TextBox();
             this._connectButton = new System.Windows.Forms.Button();
             this._disconnectButton = new System.Windows.Forms.Button();
             this._portLabel = new System.Windows.Forms.Label();
             this._ipAddressLabel = new System.Windows.Forms.Label();
             this._portTextBox = new System.Windows.Forms.TextBox();
             this._ipAddressTextBox = new System.Windows.Forms.TextBox();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this._sendCommandButton = new System.Windows.Forms.Button();
             this._commandTextBox = new System.Windows.Forms.TextBox();
+            this._statusTextBox = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -84,35 +84,6 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(320, 218);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Controls.Add(this._sendCommandButton, 1, 2);
-            this.tableLayoutPanel3.Controls.Add(this._commandTextBox, 0, 1);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(477, 3);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 3;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(320, 220);
-            this.tableLayoutPanel3.TabIndex = 1;
-            // 
-            // _statusTextBox
-            // 
-            this._statusTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._statusTextBox.Location = new System.Drawing.Point(3, 3);
-            this._statusTextBox.Multiline = true;
-            this._statusTextBox.Name = "_statusTextBox";
-            this._statusTextBox.ReadOnly = true;
-            this.tableLayoutPanel1.SetRowSpan(this._statusTextBox, 2);
-            this._statusTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this._statusTextBox.Size = new System.Drawing.Size(468, 444);
-            this._statusTextBox.TabIndex = 2;
-            // 
             // _connectButton
             // 
             this._connectButton.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -122,6 +93,7 @@
             this._connectButton.TabIndex = 0;
             this._connectButton.Text = "Connect";
             this._connectButton.UseVisualStyleBackColor = true;
+            this._connectButton.Click += new System.EventHandler(this.ConnectButtonHandler);
             // 
             // _disconnectButton
             // 
@@ -132,6 +104,7 @@
             this._disconnectButton.TabIndex = 1;
             this._disconnectButton.Text = "Disconnect";
             this._disconnectButton.UseVisualStyleBackColor = true;
+            this._disconnectButton.Click += new System.EventHandler(this.DisconnectedButonHandler);
             // 
             // _portLabel
             // 
@@ -175,6 +148,23 @@
             this._ipAddressTextBox.Text = "127.0.0.1";
             this._ipAddressTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Controls.Add(this._sendCommandButton, 1, 2);
+            this.tableLayoutPanel3.Controls.Add(this._commandTextBox, 0, 1);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(477, 3);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 3;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(320, 220);
+            this.tableLayoutPanel3.TabIndex = 1;
+            // 
             // _sendCommandButton
             // 
             this._sendCommandButton.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -184,6 +174,7 @@
             this._sendCommandButton.TabIndex = 0;
             this._sendCommandButton.Text = "Send Command";
             this._sendCommandButton.UseVisualStyleBackColor = true;
+            this._sendCommandButton.Click += new System.EventHandler(this.SendCommandButonHandler);
             // 
             // _commandTextBox
             // 
@@ -195,13 +186,25 @@
             this._commandTextBox.Size = new System.Drawing.Size(314, 85);
             this._commandTextBox.TabIndex = 1;
             // 
-            // _winFormClient
+            // _statusTextBox
+            // 
+            this._statusTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._statusTextBox.Location = new System.Drawing.Point(3, 3);
+            this._statusTextBox.Multiline = true;
+            this._statusTextBox.Name = "_statusTextBox";
+            this._statusTextBox.ReadOnly = true;
+            this.tableLayoutPanel1.SetRowSpan(this._statusTextBox, 2);
+            this._statusTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this._statusTextBox.Size = new System.Drawing.Size(468, 444);
+            this._statusTextBox.TabIndex = 2;
+            // 
+            // winFormClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "_winFormClient";
+            this.Name = "winFormClient";
             this.Text = "WinForm Client";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();

@@ -2,9 +2,9 @@ C:\Client-Network-App\Client-Network-App\bin\Debug\Client-Network-App.exe.config
 C:\Client-Network-App\Client-Network-App\bin\Debug\Client-Network-App.exe
 C:\Client-Network-App\Client-Network-App\bin\Debug\Client-Network-App.pdb
 C:\Client-Network-App\Client-Network-App\obj\Debug\Client-Network-App.csproj.AssemblyReference.cache
-C:\Client-Network-App\Client-Network-App\obj\Debug\Client_Network_App._winFormClient.resources
 C:\Client-Network-App\Client-Network-App\obj\Debug\Client_Network_App.Properties.Resources.resources
 C:\Client-Network-App\Client-Network-App\obj\Debug\Client-Network-App.csproj.GenerateResource.cache
 C:\Client-Network-App\Client-Network-App\obj\Debug\Client-Network-App.csproj.CoreCompileInputs.cache
 C:\Client-Network-App\Client-Network-App\obj\Debug\Client-Network-App.exe
 C:\Client-Network-App\Client-Network-App\obj\Debug\Client-Network-App.pdb
+C:\Client-Network-App\Client-Network-App\obj\Debug\Client_Network_App.winFormClient.resources
