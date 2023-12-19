@@ -19,7 +19,7 @@ namespace Client_Network_App
     {
         //Constants
         private const string CRLF = "\r\n";
-        private const string LOCALHOST  = "127.0.0.1";
+        private const string LOCALHOST = "127.0.0.1";
         private const int DEFAULT_PORT = 5000;
 
         //Fields
@@ -27,6 +27,9 @@ namespace Client_Network_App
         private int _port;
         private TcpClient _client;
 
+        private UdpClient _udpClient;
+        private Thread _udpThread;
+        private int _udpPort = 54321;
 
 
         public winFormClient()
@@ -55,6 +58,10 @@ namespace Client_Network_App
                 _disconnectButton.Enabled = true;
                 _sendCommandButton.Enabled = true;
 
+                _udpThread = new Thread(ListenUDP);
+                _udpThread.IsBackground = true;
+                _udpThread.Start();
+
             }
             catch (Exception ex)
             {
@@ -67,11 +74,11 @@ namespace Client_Network_App
             DisconnectFromServer();
         }
 
-        private void SendCommandButonHandler(object sender, EventArgs e) 
+        private void SendCommandButonHandler(object sender, EventArgs e)
         {
             try
             {
-                if(_client.Connected)
+                if (_client.Connected)
                 {
                     StreamWriter writer = new StreamWriter(_client.GetStream());
                     writer.WriteLine(_commandTextBox.Text);
@@ -92,7 +99,7 @@ namespace Client_Network_App
 
         private void ProcessClientTransaction(object tcpClient)
         {
-            TcpClient client = (TcpClient) tcpClient;
+            TcpClient client = (TcpClient)tcpClient;
             string input = string.Empty;
             StreamReader reader = null;
             StreamWriter writer = null;
@@ -102,20 +109,20 @@ namespace Client_Network_App
                 writer = new StreamWriter(client.GetStream());
 
                 // Tell the server we've connected
-                writer.WriteLine("Hello from a client! Ready to do your bidding!");
-                writer.Flush();
+                //writer.WriteLine("Hello from a client! Ready to do your bidding!");
+                //writer.Flush();
 
 
-                while(client.Connected)
+                while (client.Connected)
                 {
                     input = reader.ReadLine(); // block here until we receive something from the server.
-                    if(input == null)
+                    if (input == null)
                     {
                         DisconnectFromServer();
                     }
                     else
                     {
-                        switch(input)
+                        switch (input)
                         {
                             default:
                                 {
@@ -125,11 +132,12 @@ namespace Client_Network_App
                         }
                     }
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                _statusTextBox.InvokeEx(stb 
+                _statusTextBox.InvokeEx(stb
                     => stb.Text += CRLF + "Problem communicating with the server. Connection may have been intentionally disconnected.");
-                _statusTextBox.InvokeEx(stb => stb.Text += CRLF +  ex.ToString());
+                _statusTextBox.InvokeEx(stb => stb.Text += CRLF + ex.ToString());
             }
             _disconnectButton.InvokeEx(dcb => dcb.Enabled = false);
             _connectButton.InvokeEx(cb => cb.Enabled = true);
@@ -148,10 +156,36 @@ namespace Client_Network_App
                 _statusTextBox.InvokeEx(stb => stb.Text = string.Empty);
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _statusTextBox.InvokeEx(stb => stb.Text += CRLF + "Problem disconnecting from the server.");
                 _statusTextBox.InvokeEx(stb => stb.Text += CRLF + ex.ToString());
+            }
+        }
+
+        private void ListenUDP()
+        {
+            try
+            {
+                UdpClient udpClient = new UdpClient(_udpPort);
+
+                while (true)
+                {
+                    IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                    byte[] receivedBytes = udpClient.Receive(ref remoteEndPoint);
+                    string receivedMessage = Encoding.ASCII.GetString(receivedBytes);
+
+                    // Handle the received UDP message (e.g., display in a TextBox)
+                    _statusTextBox.InvokeEx(stb => stb.Text += CRLF + "UDP received from server: " + receivedMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                _statusTextBox.InvokeEx(stb => stb.Text += CRLF + "Problem with UDP client: " + ex.ToString());
+            }
+            finally
+            {
+                _statusTextBox.InvokeEx(stb => stb.Text += CRLF + "Exiting UDP client thread...");
             }
         }
 
@@ -163,13 +197,14 @@ namespace Client_Network_App
             IPAddress address = IPAddress.Parse(LOCALHOST);
             try
             {
-                if(!IPAddress.TryParse(ipAddress, out address))
+                if (!IPAddress.TryParse(ipAddress, out address))
                 {
                     address = IPAddress.Parse(LOCALHOST);
                 }
 
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 _statusTextBox.Text += CRLF + "Invalid IP address - Client will connect to: " + _serverIpAddress.ToString();
                 _statusTextBox.Text += CRLF + ex.ToString();
