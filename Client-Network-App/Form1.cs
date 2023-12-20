@@ -109,8 +109,8 @@ namespace Client_Network_App
                 writer = new StreamWriter(client.GetStream());
 
                 // Tell the server we've connected
-                //writer.WriteLine("Hello from a client! Ready to do your bidding!");
-                //writer.Flush();
+                writer.WriteLine("Hello from a client! Ready to do your bidding!");
+                writer.Flush();
 
 
                 while (client.Connected)
@@ -167,17 +167,18 @@ namespace Client_Network_App
         {
             try
             {
-                UdpClient udpClient = new UdpClient(_udpPort);
+                UdpClient udpClient = new UdpClient();
+                udpClient.Connect(LOCALHOST, 54321);
 
                 while (true)
                 {
-                    IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
-                    byte[] receivedBytes = udpClient.Receive(ref remoteEndPoint);
-                    string receivedMessage = Encoding.ASCII.GetString(receivedBytes);
+                   IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                   byte[] receivedBytes = udpClient.Receive(ref remoteEndPoint);
+                   string receivedMessage = Encoding.ASCII.GetString(receivedBytes);
 
-                    // Handle the received UDP message (e.g., display in a TextBox)
-                    _statusTextBox.InvokeEx(stb => stb.Text += CRLF + "UDP received from server: " + receivedMessage);
-                }
+                // Handle the received UDP message (e.g., display in a TextBox)
+                  _statusTextBox.InvokeEx(stb => stb.Text += CRLF + "UDP received from server: " + receivedMessage);
+                 }
             }
             catch (Exception ex)
             {
